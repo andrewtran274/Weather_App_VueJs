@@ -1,10 +1,28 @@
 <template>
-  <div>
-    <h1 v-if="weatherData">Weather in {{ weatherData.name }}</h1>
-    <p v-if="weatherData">Temperature: {{ weatherData.main.temp }}°C</p>
-    <p v-if="weatherData">Humidity: {{ weatherData.main.humidity }}%</p>
-    <img v-if="weatherData" :src="weatherIconUrl" alt="Weather Icon" />
-    <p v-else>Enter a city name to get the weather.</p>
+  <div class="weather">
+    <img
+      v-if="weatherData"
+      :src="weatherIconUrl"
+      alt="Weather Icon"
+      class="weather-img"
+    />
+    <h1 v-if="weatherData" class="weather-city">{{ weatherData.name }}</h1>
+    <p v-if="weatherData" class="temp">{{ weatherData.main.temp }}°F</p>
+    <div class="weather-info">
+      <div class="element">
+        <i class="bx bx-cloud-rain"></i>
+        <p v-if="weatherData" class="text">
+          Humidity: {{ weatherData.main.humidity }}%
+        </p>
+      </div>
+      <div class="element">
+        <i class="bx bx-wind"></i>
+        <p v-if="weatherData" class="text">
+          Wind: {{ weatherData.wind.speed }}Km/h
+        </p>
+      </div>
+      <p v-if="!weatherData">Enter a city name to get the weather.</p>
+    </div>
   </div>
 </template>
 
@@ -44,6 +62,7 @@ export default {
           `https://api.openweathermap.org/data/2.5/weather?q=${targetCity}&appid=${this.apiKey}`
         );
         this.weatherData = response.data;
+        console.log(response);
       } catch (error) {
         console.error(error);
       }
@@ -57,3 +76,37 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.weather-img {
+  min-width: 100px;
+  /* background-color: red; */
+}
+
+.weather-city {
+  font-size: 40px;
+  font-weight: 400;
+}
+
+.temp {
+  font-size: 30px;
+  font-weight: 300;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.weather-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.element i {
+  font-size: 30px;
+  /* font-weight: 200; */
+}
+
+.element {
+  /* background-color: red; */
+}
+</style>
